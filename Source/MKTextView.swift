@@ -140,10 +140,12 @@ public class MKTextView : UITextView {
     }
 
     func updateCounterLabel(){
-        self.counterLabel.sizeToFit()
-        var x = bounds.size.width + frame.origin.x - self.counterLabel.frame.width
-        var y = bounds.size.height + frame.origin.y + 2.0
-        self.counterLabel.frame = CGRectMake(x, y, self.counterLabel.frame.width, self.counterLabel.frame.height)
+        if counterLabel != nil {
+            self.counterLabel?.sizeToFit()
+            var x = bounds.size.width + frame.origin.x - self.counterLabel.frame.width
+            var y = bounds.size.height + frame.origin.y + 2.0
+            self.counterLabel?.frame = CGRectMake(x, y, self.counterLabel.frame.width, self.counterLabel.frame.height)
+        }
     }
 
     public func clear(){
@@ -195,6 +197,22 @@ public class MKTextView : UITextView {
         return CGRect(x: bX, y: bY, width: self.frame.width, height: borderWidth)
     }
 
+    
+    private func updateSize(){
+//        UIView.animateWithDuration(0.1, animations: { () -> Void in
+//            self.invalidateIntrinsicContentSize()
+//            self.showCounterLabel()
+//            self.updateCounterLabel()
+//            self.bottomBorderLayer?.frame = self.getBorderBottomFrame()
+//            if self.superview?.subviews != nil{
+//                for subVW in self.superview!.subviews{
+//                    subVW.updateConstraints()
+//                    subVW.layoutSubviews()
+//                }
+//            }
+//        })
+    }
+    
     // MARK: - Overrides
 
     override init(frame: CGRect, textContainer: NSTextContainer?) {
@@ -205,6 +223,10 @@ public class MKTextView : UITextView {
     required public init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         setupLayer()
+    }
+    
+    override public func intrinsicContentSize() -> CGSize {
+        return self.contentSize
     }
 }
 
@@ -263,6 +285,9 @@ extension MKTextView: UITextViewDelegate{
         if showCounter {
             updateCounterCount()
         }
+//        if self.contentOffset.y != 0 {
+            self.updateSize()
+//        }
         if !textView.text.isEmpty{
             hidePlaceholderLabel()
             showCounterLabel()
@@ -306,6 +331,13 @@ extension MKTextView: UITextViewDelegate{
     public func textViewDidEndEditing(textView: UITextView) {
         bottomBorderLayer?.frame = self.getBorderBottomFrame()
     }
+    
+//    public func scrollViewWillBeginDragging(scrollView: UIScrollView) {
+//    }
+//    
+//    public func scrollViewDidScroll(scrollView: UIScrollView) {
+//        self.updateSize()
+//    }
 }
 
 extension String {

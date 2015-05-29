@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		6AA0E3521B18A0CD00D9F593 /* MKTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AA0E3511B18A0CD00D9F593 /* MKTextView.swift */; };
+		6AA0E3541B18C55200D9F593 /* MKSwitch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AA0E3531B18C55200D9F593 /* MKSwitch.swift */; };
 		8667C0111A299B7200025664 /* MKLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8667C0101A299B7200025664 /* MKLabel.swift */; };
 		8667C0131A29A53100025664 /* uibaritem_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 8667C0121A29A53100025664 /* uibaritem_icon.png */; };
 		866D96861A17B12500897451 /* icon1.png in Resources */ = {isa = PBXBuildFile; fileRef = 866D96841A17B12500897451 /* icon1.png */; };
@@ -44,6 +45,7 @@
 
 /* Begin PBXFileReference section */
 		6AA0E3511B18A0CD00D9F593 /* MKTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MKTextView.swift; sourceTree = "<group>"; };
+		6AA0E3531B18C55200D9F593 /* MKSwitch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MKSwitch.swift; sourceTree = "<group>"; };
 		8667C0101A299B7200025664 /* MKLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MKLabel.swift; sourceTree = "<group>"; };
 		8667C0121A29A53100025664 /* uibaritem_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = uibaritem_icon.png; sourceTree = "<group>"; };
 		866D96841A17B12500897451 /* icon1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon1.png; sourceTree = "<group>"; };
@@ -207,6 +209,7 @@
 				86FE3A361A1788FF004A0CD5 /* MKLayer.swift */,
 				8C780DD61A16209200C9DEB9 /* MKColor.swift */,
 				6AA0E3511B18A0CD00D9F593 /* MKTextView.swift */,
+				6AA0E3531B18C55200D9F593 /* MKSwitch.swift */,
 			);
 			name = Source;
 			path = ../../Source;
@@ -320,6 +323,7 @@
 				6AA0E3521B18A0CD00D9F593 /* MKTextView.swift in Sources */,
 				8C780DD31A16203100C9DEB9 /* MKButton.swift in Sources */,
 				8C780DD51A16205100C9DEB9 /* MKTextField.swift in Sources */,
+				6AA0E3541B18C55200D9F593 /* MKSwitch.swift in Sources */,
 				86EA09681A29990D008EDEF8 /* MKImageView.swift in Sources */,
 				86FE3A2F1A1755CF004A0CD5 /* TextFieldViewController.swift in Sources */,
 				86EA09661A298A6A008EDEF8 /* BarButtonItemViewController.swift in Sources */,
