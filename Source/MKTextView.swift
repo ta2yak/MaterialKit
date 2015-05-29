@@ -18,23 +18,22 @@ public class MKTextView : UITextView {
         }
     }
     @IBInspectable public var counterLimit: Int = 0
-    
+
     @IBInspectable public var bottomBorderEnabled: Bool = true {
         didSet {
             bottomBorderLayer?.removeFromSuperlayer()
             bottomBorderLayer = nil
             if bottomBorderEnabled {
+                var bX = self.frame.origin.x
+                var bY = self.frame.height + self.frame.origin.y + 1
                 bottomBorderLayer = CALayer()
-//                bottomBorderLayer?.frame = CGRect(x: 0, y: layer.bounds.height - 1, width: bounds.width, height: 1)
-                println(self.frame)
-                println(self.bounds)
-                bottomBorderLayer?.frame = CGRect(x: 0, y: self.frame.height - 33.0, width: self.frame.width, height: 1)
+                bottomBorderLayer?.frame = CGRect(x: bX, y: bY, width: self.frame.width, height: 1)
                 bottomBorderLayer?.backgroundColor = bottomBorderColor.CGColor
-                layer.addSublayer(bottomBorderLayer)
+                self.superview?.layer.addSublayer(bottomBorderLayer)
             }
         }
     }
-    
+
     @IBInspectable public var bottomBorderWidth: CGFloat = 1.0
     @IBInspectable public var bottomBorderColor: UIColor = UIColor.lightGrayColor() {
         didSet{
@@ -42,81 +41,91 @@ public class MKTextView : UITextView {
         }
     }
     @IBInspectable public var bottomBorderHighlightWidth: CGFloat = 1.75
-    
+
     @IBInspectable public var placeholder: String? {
         didSet {
             updateFloatingLabelText()
             updatePlaceholderLabelText()
         }
     }
-    
+
     @IBInspectable public var padding: CGSize = CGSize(width: 5.0, height: 5.0)
     @IBInspectable public var floatingLabelBottomMargin: CGFloat = 2.0
     @IBInspectable public var floatingPlaceholderEnabled: Bool = false
-    
+
     // floating label
     @IBInspectable public var placeholderLabelFont: UIFont = UIFont.boldSystemFontOfSize(10.0) {
         didSet {
             placeholderLabel.font = placeholderLabelFont
         }
     }
-    
+
     @IBInspectable public var placeholderLabelTextColor: UIColor = UIColor.lightGrayColor() {
         didSet {
             placeholderLabel.textColor = placeholderLabelTextColor
         }
     }
-    
+
     @IBInspectable public var floatingLabelTextColor: UIColor = UIColor.lightGrayColor() {
         didSet {
             floatingLabel.textColor = floatingLabelTextColor
         }
     }
-    
+
     @IBInspectable public var floatingLabelFont: UIFont = UIFont.boldSystemFontOfSize(10.0) {
         didSet {
             floatingLabel.font = floatingLabelFont
         }
     }
 
-    
+    @IBInspectable public var counterLabelTextColor: UIColor = UIColor.lightGrayColor() {
+        didSet {
+            counterLabel.textColor = counterLabelTextColor
+        }
+    }
+
+    @IBInspectable public var counterLabelFont: UIFont = UIFont.boldSystemFontOfSize(10.0) {
+        didSet {
+            counterLabel.font = counterLabelFont
+        }
+    }
+
+
     // MARK: - Properties
     private var bottomBorderLayer: CALayer?
     private var floatingLabel: UILabel!
     private var placeholderLabel: UILabel!
     private var counterLabel: UILabel!
-    
+
     // MARK: - Methods
     func hidePlaceholderLabel(){
         self.placeholderLabel.alpha = 0
     }
-    
+
     func showPlaceholderLabel(){
         self.placeholderLabel.alpha = 1.0
     }
-    
+
     func addCounter(){
         counterLabel = UILabel()
         counterLabel.font = self.font
         counterLabel.alpha = 0.0
-        
         updateCounterCount()
-        
         self.superview?.addSubview(counterLabel)
     }
-    
+
     private func hideCounterLabel(){
         UIView.animateWithDuration(0.4, animations: { () -> Void in
             self.counterLabel?.alpha = 0.0
         })
     }
-    
+
     private func showCounterLabel(){
         UIView.animateWithDuration(0.4, animations: { () -> Void in
             self.counterLabel?.alpha = 1.0
         })
     }
-    
+
     func updateCounterCount(){
         var textLength = 0
         if !text.isEmpty{
@@ -129,43 +138,48 @@ public class MKTextView : UITextView {
         }
         updateCounterLabel()
     }
-    
+
     func updateCounterLabel(){
         self.counterLabel.sizeToFit()
         var x = bounds.size.width + frame.origin.x - self.counterLabel.frame.width
         var y = bounds.size.height + frame.origin.y + 2.0
         self.counterLabel.frame = CGRectMake(x, y, self.counterLabel.frame.width, self.counterLabel.frame.height)
     }
-    
-    
+
+    public func clear(){
+        self.text = ""
+        self.textViewDidChange(self)
+    }
+
+
     private func setupLayer() {
         self.delegate = self
-        
+
         // floating label
         floatingLabel = UILabel()
         floatingLabel.font = floatingLabelFont
         floatingLabel.alpha = 0.0
         updateFloatingLabelText()
         self.textContainerInset.top = 20.0
-        
+
         // placeholder label
         placeholderLabel = UILabel(frame: CGRect(x: self.textContainerInset.left + 3, y: self.textContainerInset.top, width: 0, height: 0))
         placeholderLabel.font = self.font
-        
-        insertSubview(placeholderLabel, atIndex: 0)
+
+//        insertSubview(placeholderLabel, atIndex: 0)
         insertSubview(floatingLabel, atIndex: 0)
     }
-    
-    
+
+
     public func textRectForBounds(bounds: CGRect) -> CGRect {
         let rect = self.bounds
         var newRect = CGRect(x: rect.origin.x + padding.width, y: rect.origin.y,
             width: rect.size.width - 2*padding.width, height: rect.size.height)
-        
+
         if !floatingPlaceholderEnabled {
             return newRect
         }
-        
+
         if !text.isEmpty {
             let dTop = floatingLabel.font.lineHeight + floatingLabelBottomMargin
             newRect = UIEdgeInsetsInsetRect(newRect, UIEdgeInsets(top: dTop, left: 0.0, bottom: 0.0, right: 0.0))
@@ -173,6 +187,14 @@ public class MKTextView : UITextView {
         return newRect
     }
     
+    func getBorderBottomFrame() -> CGRect {
+        bottomBorderLayer?.backgroundColor = isFirstResponder() ? tintColor.CGColor : bottomBorderColor.CGColor
+        let borderWidth = isFirstResponder() ? bottomBorderHighlightWidth : bottomBorderWidth
+        var bX = self.frame.origin.x
+        var bY = self.frame.height + self.frame.origin.y + 1
+        return CGRect(x: bX, y: bY, width: self.frame.width, height: borderWidth)
+    }
+
     // MARK: - Overrides
 
     override init(frame: CGRect, textContainer: NSTextContainer?) {
@@ -199,11 +221,10 @@ private extension MKTextView {
         default:
             break
         }
-        println(floatingLabel.frame)
         floatingLabel.frame = CGRect(x: originX, y: padding.height,
             width: floatingLabel.frame.size.width, height: floatingLabel.frame.size.height)
     }
-    
+
     private func showFloatingLabel() {
         let curFrame = floatingLabel.frame
         floatingLabel.frame = CGRect(x: curFrame.origin.x, y: bounds.height/2, width: curFrame.width, height: curFrame.height)
@@ -213,17 +234,17 @@ private extension MKTextView {
                 self.floatingLabel.frame = curFrame
             }, completion: nil)
     }
-    
+
     private func hideFloatingLabel() {
         floatingLabel.alpha = 0.0
     }
-    
+
     private func updateFloatingLabelText() {
         floatingLabel.text = placeholder
         floatingLabel.sizeToFit()
         setFloatingLabelOverlapTextField()
     }
-    
+
     private func updatePlaceholderLabelText() {
         placeholderLabel.text = placeholder
         placeholderLabel.sizeToFit()
@@ -249,11 +270,11 @@ extension MKTextView: UITextViewDelegate{
         hideCounterLabel()
         hideFloatingLabel()
     }
-    
+
     public func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
         var actualCount = count(textView.text)
         var replaceCount = count(text)
-        
+
         if counterLimit > 0 {
             if actualCount < counterLimit {
                 if replaceCount > 1 {
@@ -271,17 +292,13 @@ extension MKTextView: UITextViewDelegate{
         }
         return true
     }
-    
+
     public func textViewDidBeginEditing(textView: UITextView) {
-        bottomBorderLayer?.backgroundColor = isFirstResponder() ? tintColor.CGColor : bottomBorderColor.CGColor
-        let borderWidth = isFirstResponder() ? bottomBorderHighlightWidth : bottomBorderWidth
-        bottomBorderLayer?.frame = CGRect(x: 0, y: layer.bounds.height - borderWidth, width: layer.bounds.width, height: borderWidth)
+        bottomBorderLayer?.frame = self.getBorderBottomFrame()
     }
-    
+
     public func textViewDidEndEditing(textView: UITextView) {
-        bottomBorderLayer?.backgroundColor = isFirstResponder() ? tintColor.CGColor : bottomBorderColor.CGColor
-        let borderWidth = isFirstResponder() ? bottomBorderHighlightWidth : bottomBorderWidth
-        bottomBorderLayer?.frame = CGRect(x: 0, y: layer.bounds.height - borderWidth, width: layer.bounds.width, height: borderWidth)
+        bottomBorderLayer?.frame = self.getBorderBottomFrame()
     }
 }
 
@@ -296,4 +313,3 @@ extension String {
         }
     }
 }
-
