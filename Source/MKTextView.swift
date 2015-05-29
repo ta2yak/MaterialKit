@@ -166,7 +166,7 @@ public class MKTextView : UITextView {
         placeholderLabel = UILabel(frame: CGRect(x: self.textContainerInset.left + 3, y: self.textContainerInset.top, width: 0, height: 0))
         placeholderLabel.font = self.font
 
-//        insertSubview(placeholderLabel, atIndex: 0)
+        insertSubview(placeholderLabel, atIndex: 0)
         insertSubview(floatingLabel, atIndex: 0)
     }
 
