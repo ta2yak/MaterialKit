@@ -49,7 +49,7 @@ public class MKTextView : UITextView {
         }
     }
 
-    @IBInspectable public var padding: CGSize = CGSize(width: 5.0, height: 5.0)
+    @IBInspectable public var padding: CGSize = CGSize(width: 2.0, height: 5.0)
     @IBInspectable public var floatingLabelBottomMargin: CGFloat = 2.0
     @IBInspectable public var floatingPlaceholderEnabled: Bool = false
 
@@ -158,16 +158,16 @@ public class MKTextView : UITextView {
         // floating label
         floatingLabel = UILabel()
         floatingLabel.font = floatingLabelFont
-        floatingLabel.alpha = 0.0
+        floatingLabel.alpha = 1.0
         updateFloatingLabelText()
-        self.textContainerInset.top = 20.0
+//        self.textContainerInset.top = 30.0
 
         // placeholder label
         placeholderLabel = UILabel(frame: CGRect(x: self.textContainerInset.left + 3, y: self.textContainerInset.top, width: 0, height: 0))
         placeholderLabel.font = self.font
 
         insertSubview(placeholderLabel, atIndex: 0)
-        insertSubview(floatingLabel, atIndex: 0)
+//        insertSubview(floatingLabel, atIndex: 0)
     }
 
 
@@ -221,13 +221,19 @@ private extension MKTextView {
         default:
             break
         }
-        floatingLabel.frame = CGRect(x: originX, y: padding.height,
-            width: floatingLabel.frame.size.width, height: floatingLabel.frame.size.height)
+        let positionFrame = CGRect(x: self.frame.origin.x + originX + padding.width, y: self.frame.origin.y - self.floatingLabel.frame.height, width: floatingLabel.frame.size.width, height: floatingLabel.frame.size.height)
+
+//        floatingLabel.frame = CGRect(x: originX, y: padding.height,
+//            width: floatingLabel.frame.size.width, height: floatingLabel.frame.size.height)
+        floatingLabel.frame = positionFrame
     }
 
     private func showFloatingLabel() {
+        floatingLabel.removeFromSuperview()
+        self.superview?.insertSubview(floatingLabel, aboveSubview: self)
         let curFrame = floatingLabel.frame
-        floatingLabel.frame = CGRect(x: curFrame.origin.x, y: bounds.height/2, width: curFrame.width, height: curFrame.height)
+        let superCurFrame = self.frame
+        floatingLabel.frame = CGRect(x: curFrame.origin.x, y: curFrame.origin.y + bounds.height/2, width: curFrame.width, height: curFrame.height)
         UIView.animateWithDuration(0.45, delay: 0.0, options: .CurveEaseOut,
             animations: {
                 self.floatingLabel.alpha = 1.0
