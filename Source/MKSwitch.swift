@@ -10,7 +10,7 @@
 import UIKit
 import QuartzCore
 
-typealias MKSwitch_Trigger = (currentPoint: Int!) -> (Void)
+public typealias MKSwitch_Trigger = (currentPoint: Int!) -> (Void)
 
 @IBDesignable
 public class MKSwitch : UIView {
@@ -93,6 +93,10 @@ public class MKSwitch : UIView {
     private lazy var mkLayer: MKLayer = MKLayer(superLayer: self.layer)
     
     // MARK: - Methods
+    public func setTrigger(tr: MKSwitch_Trigger){
+        self.trigger = tr
+    }
+    
     func changeGestureState(enable: Bool){
         self.leftSwipe.enabled = enable
         self.rightSwipe.enabled = enable
@@ -124,9 +128,9 @@ public class MKSwitch : UIView {
         }
     }
     
-    func changePoint(pos: Int){
+    public func changePoint(pos: Int){
         self.changeGestureState(false)
-        self.currentPoint == pos
+        self.currentPoint = pos
         var point = self.points[self.currentPoint]
         self.changeRippleColor()
         UIView.animateWithDuration(0.4, animations: { () -> Void in
@@ -207,14 +211,14 @@ public class MKSwitch : UIView {
         
         circleButton.layer.shadowOpacity = 0.75
         circleButton.layer.shadowRadius = 1.5
-        circleButton.layer.shadowColor = self.buttonColor.CGColor
+        circleButton.layer.shadowColor = UIColor.blackColor().CGColor
         circleButton.layer.shadowOffset = CGSize(width: 1.0, height: 1.5)
     }
     
     // MARK: - Overrides
     public override func drawRect(rect: CGRect) {
         self.circleCenter = CGPoint(x: 0, y: self.frame.height / 4)
-
+        
         self.circleWidth = self.frame.height / 2
         var circleHeight = self.circleWidth
         
@@ -226,33 +230,33 @@ public class MKSwitch : UIView {
         self.circleButton.cornerRadius = self.circleWidth / 2
         self.addSubview(self.circleButton)
         
-//        var panGesture = UIPanGestureRecognizer(target: self, action: Selector("handlePan:"))
+        //        var panGesture = UIPanGestureRecognizer(target: self, action: Selector("handlePan:"))
         self.leftSwipe = UISwipeGestureRecognizer(target: self, action: Selector("handleSwipes:"))
         self.rightSwipe = UISwipeGestureRecognizer(target: self, action: Selector("handleSwipes:"))
         
         leftSwipe.direction = .Left
         rightSwipe.direction = .Right
         
-//        self.circleButton.addGestureRecognizer(leftSwipe)
-//        self.circleButton.addGestureRecognizer(rightSwipe)
+        //        self.circleButton.addGestureRecognizer(leftSwipe)
+        //        self.circleButton.addGestureRecognizer(rightSwipe)
         
         self.addGestureRecognizer(leftSwipe)
         self.addGestureRecognizer(rightSwipe)
         
         self.set3Points()
         self.addCenterLine()
-//        self.configStyle()
+        //        self.configStyle()
         self.configButton()
-//        self.circleButton.addGestureRecognizer(panGesture)
+        //        self.circleButton.addGestureRecognizer(panGesture)
     }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
     }
-
+    
     required public init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-//        fatalError("init(coder:) has not been implemented")
+        //        fatalError("init(coder:) has not been implemented")
     }
 }
 
