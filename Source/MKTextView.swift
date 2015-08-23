@@ -166,7 +166,7 @@ public class MKTextView : UITextView {
         floatingLabel.font = floatingLabelFont
         floatingLabel.alpha = 1.0
         updateFloatingLabelText()
-        self.textContainerInset.top = 30.0
+//        self.textContainerInset.top = 30.0
 
         // placeholder label
         placeholderLabel = UILabel(frame: CGRect(x: self.textContainerInset.left + 3, y: self.textContainerInset.top, width: 0, height: 0))
