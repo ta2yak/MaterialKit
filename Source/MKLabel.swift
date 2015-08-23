@@ -87,9 +87,9 @@ public class MKLabel: UILabel {
         mkLayer.animateAlphaForBackgroundLayer(backgroundAniTimingFunction, duration: CFTimeInterval(self.backgroundAniDuration))
     }
 
-    public override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
+    public override func touchesBegan(touches: NSSet, withEvent event: UIEvent) {
         super.touchesBegan(touches, withEvent: event)
-        if let firstTouch = touches.first as? UITouch {
+        if let firstTouch = touches.anyObject() as? UITouch {
             let location = firstTouch.locationInView(self)
             animateRipple(location: location)
         }

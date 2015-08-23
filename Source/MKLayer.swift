@@ -44,7 +44,7 @@ public class MKLayer {
     
     public var rippleLocation: MKRippleLocation = .TapLocation {
         didSet {
-            let origin: CGPoint?
+            var origin: CGPoint?
             let sw = CGRectGetWidth(superLayer.bounds)
             let sh = CGRectGetHeight(superLayer.bounds)
             

@@ -116,20 +116,20 @@ public class MKTextView : UITextView {
 
     private func hideCounterLabel(){
         UIView.animateWithDuration(0.4, animations: { () -> Void in
-            self.counterLabel?.alpha = 0.0
+            self.counterLabel.alpha = 0.0
         })
     }
 
     private func showCounterLabel(){
         UIView.animateWithDuration(0.4, animations: { () -> Void in
-            self.counterLabel?.alpha = 1.0
+            self.counterLabel.alpha = 1.0
         })
     }
 
     func updateCounterCount(){
         var textLength = 0
         if !text.isEmpty{
-            textLength = count(text)
+            textLength = text.utf16Count
         }
         if counterLimit > 0 {
             self.counterLabel.text = "\(textLength) / \(counterLimit)"
@@ -303,8 +303,8 @@ extension MKTextView: UITextViewDelegate{
     }
 
     public func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
-        var actualCount = count(textView.text)
-        var replaceCount = count(text)
+        var actualCount = textView.text.utf16Count
+        var replaceCount = text.utf16Count
 
         if counterLimit > 0 {
             if actualCount < counterLimit {
@@ -344,7 +344,7 @@ extension String {
     /// Truncates the string to length number of characters and
     /// appends optional trailing string if longer
     func truncate(length: Int, trailing: String? = nil) -> String {
-        if count(self) > length {
+        if self.utf16Count > length {
             return self.substringToIndex(advance(self.startIndex, length)) + (trailing ?? "")
         } else {
             return self
