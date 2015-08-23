@@ -116,13 +116,17 @@ public class MKTextView : UITextView {
 
     private func hideCounterLabel(){
         UIView.animateWithDuration(0.4, animations: { () -> Void in
-            self.counterLabel.alpha = 0.0
+            if let label = self.counterLabel {
+                label.alpha = 0.0
+            }
         })
     }
 
     private func showCounterLabel(){
         UIView.animateWithDuration(0.4, animations: { () -> Void in
-            self.counterLabel.alpha = 1.0
+            if let label = self.counterLabel {
+                label.alpha = 1.0
+            }
         })
     }
 
@@ -162,7 +166,7 @@ public class MKTextView : UITextView {
         floatingLabel.font = floatingLabelFont
         floatingLabel.alpha = 1.0
         updateFloatingLabelText()
-//        self.textContainerInset.top = 30.0
+        self.textContainerInset.top = 30.0
 
         // placeholder label
         placeholderLabel = UILabel(frame: CGRect(x: self.textContainerInset.left + 3, y: self.textContainerInset.top, width: 0, height: 0))
